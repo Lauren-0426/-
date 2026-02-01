@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>MBTI职业性格测试（93题手机适配版）</title>
+    <title>MBTI测试28题（中国地区修行版）</title>
     <style>
         * {
             margin: 0;
@@ -26,6 +26,46 @@
             border-radius: 10px;
             box-shadow: 0 0 15px rgba(0,0,0,0.05);
         }
+        /* 密码解锁模块样式 */
+        .password-section {
+            text-align: center;
+            padding: 40px 20px;
+            background: #fafafa;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        #passwordInput {
+            width: 90%;
+            height: 48px;
+            padding: 0 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            font-size: 16px;
+        }
+        .password-section button {
+            width: 90%;
+            height: 48px;
+            background-color: #4299e1;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        .password-section button:hover {
+            background-color: #3182ce;
+        }
+        .error-tip {
+            color: red;
+            margin-top: 10px;
+            display: none;
+        }
+        /* 测试内容样式（默认隐藏） */
+        .test-content {
+            display: none;
+        }
         .title {
             text-align: center;
             font-size: 18px;
@@ -44,20 +84,6 @@
             font-size: 15px;
             color: #2d3748;
             margin: 10px 0 6px;
-        }
-        .intro-section p {
-            margin-bottom: 6px;
-        }
-        .question-group {
-            margin-bottom: 30px;
-        }
-        .group-title {
-            font-size: 16px;
-            font-weight: 600;
-            color: #2d3748;
-            margin-bottom: 15px;
-            padding-left: 8px;
-            border-left: 3px solid #4299e1;
         }
         .question-item {
             margin-bottom: 18px;
@@ -129,20 +155,10 @@
             text-align: center;
             margin-bottom: 20px;
         }
-        .score-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 20px;
-            font-size: 12px;
-        }
-        .score-table th, .score-table td {
-            border: 1px solid #dee2e6;
-            padding: 8px 5px;
-            text-align: center;
-        }
-        .score-table th {
-            background-color: #f0f8fb;
-            color: #2d3748;
+        .score-detail {
+            font-size: 13px;
+            margin-bottom: 15px;
+            line-height: 1.8;
         }
         .type-result {
             font-size: 20px;
@@ -178,50 +194,14 @@
             color: #4a5568;
             line-height: 1.7;
         }
-        .usage-desc h3 {
-            font-size: 15px;
-            color: #2d3748;
-            margin-bottom: 8px;
-        }
-        /* 密码验证模块样式 */
-        .password-section {
-            text-align: center;
-            padding: 40px 20px;
-            background: #fafafa;
-            border-radius: 10px;
-            margin-bottom: 20px;
-        }
-        #passwordInput {
-            width: 90%;
-            height: 48px;
-            padding: 0 15px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            margin-bottom: 15px;
-            font-size: 16px;
-        }
-        .password-section button {
-            width: 90%;
-            height: 48px;
-            background-color: #4299e1;
-            color: #fff;
-            border: none;
-            border-radius: 8px;
-            font-size: 16px;
-            cursor: pointer;
-            transition: background 0.3s;
-        }
-        .password-section button:hover {
-            background-color: #3182ce;
-        }
-        /* 电脑端适配补充 */
+        /* 电脑端适配 */
         @media (min-width: 768px) {
             body {
                 padding: 20px;
                 font-size: 15px;
             }
             .container {
-                max-width: 900px;
+                max-width: 800px;
                 padding: 30px 25px;
             }
             .title {
@@ -235,10 +215,6 @@
             .intro-section h3 {
                 font-size: 16px;
             }
-            .group-title {
-                font-size: 17px;
-                margin-bottom: 18px;
-            }
             .question-item {
                 padding: 15px;
                 margin-bottom: 20px;
@@ -246,28 +222,24 @@
             .options {
                 gap: 12px;
             }
-            .score-table {
-                font-size: 14px;
+            .submit-btn {
+                width: 220px;
+                margin: 30px auto;
             }
-            .score-table th, .score-table td {
-                padding: 12px;
+            .password-section {
+                padding: 50px 30px;
+            }
+            #passwordInput, .password-section button {
+                width: 50%;
+            }
+            .score-detail {
+                font-size: 14px;
             }
             .personality-desc {
                 padding: 20px;
             }
             .personality-desc p {
                 font-size: 14px;
-            }
-            .submit-btn {
-                width: 220px;
-                margin: 30px auto;
-            }
-            /* 电脑端密码模块适配 */
-            .password-section {
-                padding: 50px 30px;
-            }
-            #passwordInput, .password-section button {
-                width: 50%;
             }
         }
         @media print {
@@ -282,6 +254,9 @@
             .submit-btn, .result-section, .password-section {
                 display: none !important;
             }
+            .test-content {
+                display: block !important;
+            }
             .question-item {
                 background: none;
                 border: 1px solid #eee;
@@ -291,782 +266,409 @@
 </head>
 <body>
     <div class="container">
-        <!-- 固定密码验证模块（默认显示） -->
+        <!-- 密码解锁模块（默认显示） -->
         <div class="password-section">
             <h3>请输入访问密码</h3>
             <input type="text" id="passwordInput" placeholder="输入指定密码解锁测试">
             <button onclick="checkPassword()">验证解锁</button>
-            <p class="error-tip" style="color: red; display: none;">密码错误，请重新输入！</p>
+            <p class="error-tip" id="errorTip">密码错误，请重新输入！</p>
         </div>
 
-        <!-- 测试内容模块（默认隐藏，验证通过后显示） -->
-        <div class="test-content" style="display: none;">
-            <div class="title">MBTI职业性格测试（93题完整版）</div>
+        <!-- 测试内容模块（默认隐藏） -->
+        <div class="test-content">
+            <div class="title">MBTI测试28题（中国地区修行版）</div>
 
-            <!-- 测试说明与用途 -->
+            <!-- 测试说明 -->
             <div class="intro-section">
-                <h3>测试前须知</h3>
-                <p>1、请诚实、独立回答问题，方能获得有效结果；</p>
-                <p>2、本报告展示性格倾向，非知识、技能或经验评估；</p>
-                <p>3、性格类型无好坏之分，每种类型均有优劣，了解自身可更好发挥特长、规避短板；</p>
-                <p>4、共93题，需时约18分钟，所有题目无对错，按实际感受选择。</p>
-
-                <h3>测试用途</h3>
-                <p>本测试基于迈尔斯-布里格斯类型指标，可帮助你：① 清晰认知自身性格优劣势；② 优化人际交往模式，更好地与他人协作；③ 辅助职业定位与职业生涯规划；④ 提升决策效率，匹配更适合的生活与工作场景。</p>
+                <h3>前言</h3>
+                <p>中国MBTI性格类型系统有机融合国际权威MBTI系统与高智商协会性格系统，经中国人测试优化，已实现中国化，可靠性在职业定位、生涯规划中得到充分验证。</p>
+                <h3>测试说明</h3>
+                <p>1、本问卷共28题，取自日常生活，反映适合你的工作氛围与环境，无对错之分；</p>
+                <p>2、按第一感觉作答，无需过度思考，所有题目必须作答；</p>
+                <p>3、测验含测谎题目，未诚实回答则结果无效。</p>
+                <h3>计分规则</h3>
+                <p>第1-7题：A=E(外向)，B=I(内向)；第8-14题：A=N(直觉)，B=S(感觉)；</p>
+                <p>第15-21题：A=F(情感)，B=T(思维)；第22-28题：A=J(判断)，B=P(感知)；</p>
+                <p>4分=中度偏好，5-6分=渐强偏好，7分=极强偏好。</p>
             </div>
 
             <!-- 答题区域 -->
             <form id="mbtiForm">
-                <!-- 第一部分题目 -->
-                <div class="question-group">
-                    <div class="group-title">一、哪一个答案最能贴切描绘你一般的感受或行为？</div>
-                    <!-- 第1题 -->
-                    <div class="question-item">
-                        <span class="num">1.</span>当你要外出一整天，你会
-                        <div class="options">
-                            <label class="option"><input type="radio" name="q1" value="A" data-dim="J"><span>A 计划你要做什么和在什么时候做</span></label>
-                            <label class="option"><input type="radio" name="q1" value="B" data-dim="P"><span>B 说去就去</span></label>
-                        </div>
+                <!-- 第1-7题 E/I维度 -->
+                <div class="question-item">
+                    <span class="num">1.</span>我倾向从何处得到动力和信心：
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q1" value="A" data-dim="E"><span>(A)别人。</span></label>
+                        <label class="option"><input type="radio" name="q1" value="B" data-dim="I"><span>(B)我自己的想法。</span></label>
                     </div>
-                    <!-- 第2题 -->
-                    <div class="question-item">
-                        <span class="num">2.</span>你认为自己是一个
-                        <div class="options">
-                            <label class="option"><input type="radio" name="q2" value="A" data-dim="P"><span>A 较为随兴所至的人</span></label>
-                            <label class="option"><input type="radio" name="q2" value="B" data-dim="J"><span>B 较为有条理的人</span></label>
-                        </div>
+                </div>
+                <div class="question-item">
+                    <span class="num">2.</span>当我参加一个社交聚会时，我一般是这样的状态：
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q2" value="A" data-dim="E"><span>(A)夜色越深越有劲，一旦我开始投入，也许就是最晚离开的那一个。</span></label>
+                        <label class="option"><input type="radio" name="q2" value="B" data-dim="I"><span>(B)在夜晚开始的时候，我就疲倦了并且想回家。</span></label>
                     </div>
-                    <!-- 第3题 -->
-                    <div class="question-item">
-                        <span class="num">3.</span>假如你是一位老师，你会选教
-                        <div class="options">
-                            <label class="option"><input type="radio" name="q3" value="A" data-dim="S"><span>A 以事实为主的课程</span></label>
-                            <label class="option"><input type="radio" name="q3" value="B" data-dim="N"><span>B 涉及理论的课程</span></label>
-                        </div>
+                </div>
+                <div class="question-item">
+                    <span class="num">3.</span>下列哪一种听起来比较吸引人？
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q3" value="A" data-dim="E"><span>(A)与我的恋人到有很多人且社交活动频繁的地方。</span></label>
+                        <label class="option"><input type="radio" name="q3" value="B" data-dim="I"><span>(B)待在家中与我的恋人做一些特别的事情，例如说观赏一部有趣的录像带并享用我最爱的外带食物。</span></label>
                     </div>
-                    <!-- 第4题 -->
-                    <div class="question-item">
-                        <span class="num">4.</span>你通常
-                        <div class="options">
-                            <label class="option"><input type="radio" name="q4" value="A" data-dim="E"><span>A 与人容易混熟</span></label>
-                            <label class="option"><input type="radio" name="q4" value="B" data-dim="I"><span>B 比较沉静或矜持</span></label>
-                        </div>
+                </div>
+                <div class="question-item">
+                    <span class="num">4.</span>在约会中，我通常：
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q4" value="A" data-dim="E"><span>(A)整体来说蛮健谈的。</span></label>
+                        <label class="option"><input type="radio" name="q4" value="B" data-dim="I"><span>(B)较安静并保留，直到我觉得准备好了，才开始说话。</span></label>
                     </div>
-                    <!-- 第5题 -->
-                    <div class="question-item">
-                        <span class="num">5.</span>一般来说，你和哪些人比较合得来？
-                        <div class="options">
-                            <label class="option"><input type="radio" name="q5" value="A" data-dim="N"><span>A 富于想象力的人</span></label>
-                            <label class="option"><input type="radio" name="q5" value="B" data-dim="S"><span>B 现实的人</span></label>
-                        </div>
+                </div>
+                <div class="question-item">
+                    <span class="num">5.</span>过去，我遇见我大部分恋人是：
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q5" value="A" data-dim="E"><span>(A)在公众场合，比如学习工作上、休闲活动中、或当朋友介绍我给他们的朋友时。</span></label>
+                        <label class="option"><input type="radio" name="q5" value="B" data-dim="I"><span>(B)透过私人的方式，例如婚恋网站、网络聊天、或是由亲密的朋友和家人介绍。</span></label>
                     </div>
-                    <!-- 第6题 -->
-                    <div class="question-item">
-                        <span class="num">6.</span>你是否经常让
-                        <div class="options">
-                            <label class="option"><input type="radio" name="q6" value="A" data-dim="F"><span>A 你的情感支配你的理智</span></label>
-                            <label class="option"><input type="radio" name="q6" value="B" data-dim="T"><span>B 你的理智主宰你的情感</span></label>
-                        </div>
+                </div>
+                <div class="question-item">
+                    <span class="num">6.</span>论真实的想法，我倾向拥有：
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q6" value="A" data-dim="E"><span>(A)很多认识的人和很亲密的朋友。</span></label>
+                        <label class="option"><input type="radio" name="q6" value="B" data-dim="I"><span>(B)一些很亲密的朋友和一些认识的人。</span></label>
                     </div>
-                    <!-- 第7题 -->
-                    <div class="question-item">
-                        <span class="num">7.</span>处理许多事情上，你会喜欢
-                        <div class="options">
-                            <label class="option"><input type="radio" name="q7" value="A" data-dim="P"><span>A 凭兴所至行事</span></label>
-                            <label class="option"><input type="radio" name="q7" value="B" data-dim="J"><span>B 按照计划行事</span></label>
-                        </div>
-                    </div>
-                    <!-- 第8题 -->
-                    <div class="question-item">
-                        <span class="num">8.</span>你是否
-                        <div class="options">
-                            <label class="option"><input type="radio" name="q8" value="A" data-dim="E"><span>A 容易让人了解</span></label>
-                            <label class="option"><input type="radio" name="q8" value="B" data-dim="I"><span>B 难于让人了解</span></label>
-                        </div>
-                    </div>
-                    <!-- 第9题 -->
-                    <div class="question-item">
-                        <span class="num">9.</span>按照程序表做事
-                        <div class="options">
-                            <label class="option"><input type="radio" name="q9" value="A" data-dim="J"><span>A 合你心意</span></label>
-                            <label class="option"><input type="radio" name="q9" value="B" data-dim="P"><span>B 令你感到束缚</span></label>
-                        </div>
-                    </div>
-                    <!-- 第10题 -->
-                    <div class="question-item">
-                        <span class="num">10.</span>当你有一份特别的任务，你会喜欢
-                        <div class="options">
-                            <label class="option"><input type="radio" name="q10" value="A" data-dim="J"><span>A 开始前小心组织计划</span></label>
-                            <label class="option"><input type="radio" name="q10" value="B" data-dim="P"><span>B 边做边找须做什么</span></label>
-                        </div>
-                    </div>
-                    <!-- 第11题 -->
-                    <div class="question-item">
-                        <span class="num">11.</span>在大多数情况下，你会选择
-                        <div class="options">
-                            <label class="option"><input type="radio" name="q11" value="A" data-dim="P"><span>A 顺其自然</span></label>
-                            <label class="option"><input type="radio" name="q11" value="B" data-dim="J"><span>B 按程序表做事</span></label>
-                        </div>
-                    </div>
-                    <!-- 第12题 -->
-                    <div class="question-item">
-                        <span class="num">12.</span>大多数人会说你是一个
-                        <div class="options">
-                            <label class="option"><input type="radio" name="q12" value="A" data-dim="I"><span>A 重视自我隐私的人</span></label>
-                            <label class="option"><input type="radio" name="q12" value="B" data-dim="E"><span>B 非常坦率开放的人</span></label>
-                        </div>
-                    </div>
-                    <!-- 第13题 -->
-                    <div class="question-item">
-                        <span class="num">13.</span>你宁愿被人认为是一个
-                        <div class="options">
-                            <label class="option"><input type="radio" name="q13" value="A" data-dim="S"><span>A 实事求是的人</span></label>
-                            <label class="option"><input type="radio" name="q13" value="B" data-dim="N"><span>B 机灵的人</span></label>
-                        </div>
-                    </div>
-                    <!-- 第14题 -->
-                    <div class="question-item">
-                        <span class="num">14.</span>在一大群人当中，通常是
-                        <div class="options">
-                            <label class="option"><input type="radio" name="q14" value="A" data-dim="E"><span>A 你介绍大家认识</span></label>
-                            <label class="option"><input type="radio" name="q14" value="B" data-dim="I"><span>B 别人介绍你</span></label>
-                        </div>
-                    </div>
-                    <!-- 第15题 -->
-                    <div class="question-item">
-                        <span class="num">15.</span>你会跟哪些人做朋友？
-                        <div class="options">
-                            <label class="option"><input type="radio" name="q15" value="A" data-dim="N"><span>A 常提出新注意的</span></label>
-                            <label class="option"><input type="radio" name="q15" value="B" data-dim="S"><span>B 脚踏实地的</span></label>
-                        </div>
-                    </div>
-                    <!-- 第16题 -->
-                    <div class="question-item">
-                        <span class="num">16.</span>你倾向
-                        <div class="options">
-                            <label class="option"><input type="radio" name="q16" value="A" data-dim="F"><span>A 重视感情多于逻辑</span></label>
-                            <label class="option"><input type="radio" name="q16" value="B" data-dim="T"><span>B 重视逻辑多于感情</span></label>
-                        </div>
-                    </div>
-                    <!-- 第17题 -->
-                    <div class="question-item">
-                        <span class="num">17.</span>你比较喜欢
-                        <div class="options">
-                            <label class="option"><input type="radio" name="q17" value="A" data-dim="P"><span>A 坐观事情发展才作计划</span></label>
-                            <label class="option"><input type="radio" name="q17" value="B" data-dim="J"><span>B 很早就作计划</span></label>
-                        </div>
-                    </div>
-                    <!-- 第18题 -->
-                    <div class="question-item">
-                        <span class="num">18.</span>你喜欢花很多的时间
-                        <div class="options">
-                            <label class="option"><input type="radio" name="q18" value="A" data-dim="I"><span>A 一个人独处</span></label>
-                            <label class="option"><input type="radio" name="q18" value="B" data-dim="E"><span>B 和别人在一起</span></label>
-                        </div>
-                    </div>
-                    <!-- 第19题 -->
-                    <div class="question-item">
-                        <span class="num">19.</span>与很多人一起会
-                        <div class="options">
-                            <label class="option"><input type="radio" name="q19" value="A" data-dim="E"><span>A 令你活力倍增</span></label>
-                            <label class="option"><input type="radio" name="q19" value="B" data-dim="I"><span>B 常常令你心力憔悴</span></label>
-                        </div>
-                    </div>
-                    <!-- 第20题 -->
-                    <div class="question-item">
-                        <span class="num">20.</span>你比较喜欢
-                        <div class="options">
-                            <label class="option"><input type="radio" name="q20" value="A" data-dim="J"><span>A 很早便把约会、社交聚集等事情安排妥当</span></label>
-                            <label class="option"><input type="radio" name="q20" value="B" data-dim="P"><span>B 无拘无束，看当时有什么好玩就做什么</span></label>
-                        </div>
-                    </div>
-                    <!-- 第21题 -->
-                    <div class="question-item">
-                        <span class="num">21.</span>计划一个旅程时，你较喜欢
-                        <div class="options">
-                            <label class="option"><input type="radio" name="q21" value="A" data-dim="P"><span>A 大部分的时间都是跟当天的感觉行事</span></label>
-                            <label class="option"><input type="radio" name="q21" value="B" data-dim="J"><span>B 事先知道大部分的日子会做什么</span></label>
-                        </div>
-                    </div>
-                    <!-- 第22题 -->
-                    <div class="question-item">
-                        <span class="num">22.</span>在社交聚会中，你
-                        <div class="options">
-                            <label class="option"><input type="radio" name="q22" value="A" data-dim="I"><span>A 有时感到郁闷</span></label>
-                            <label class="option"><input type="radio" name="q22" value="B" data-dim="E"><span>B 常常乐在其中</span></label>
-                        </div>
-                    </div>
-                    <!-- 第23题 -->
-                    <div class="question-item">
-                        <span class="num">23.</span>你通常
-                        <div class="options">
-                            <label class="option"><input type="radio" name="q23" value="A" data-dim="E"><span>A 和别人容易混熟</span></label>
-                            <label class="option"><input type="radio" name="q23" value="B" data-dim="I"><span>B 趋向自处一隅</span></label>
-                        </div>
-                    </div>
-                    <!-- 第24题 -->
-                    <div class="question-item">
-                        <span class="num">24.</span>哪些人会更吸引你？
-                        <div class="options">
-                            <label class="option"><input type="radio" name="q24" value="A" data-dim="N"><span>A 一个思想敏捷及非常聪颖的人</span></label>
-                            <label class="option"><input type="radio" name="q24" value="B" data-dim="S"><span>B 实事求是，具丰富常识的人</span></label>
-                        </div>
-                    </div>
-                    <!-- 第25题 -->
-                    <div class="question-item">
-                        <span class="num">25.</span>在日常工作中，你会
-                        <div class="options">
-                            <label class="option"><input type="radio" name="q25" value="A" data-dim="P"><span>A 颇为喜欢处理迫使你分秒必争的突发</span></label>
-                            <label class="option"><input type="radio" name="q25" value="B" data-dim="J"><span>B 通常预先计划，以免要在压力下工作</span></label>
-                        </div>
-                    </div>
-                    <!-- 第26题 -->
-                    <div class="question-item">
-                        <span class="num">26.</span>你认为别人一般
-                        <div class="options">
-                            <label class="option"><input type="radio" name="q26" value="A" data-dim="I"><span>A 要花很长时间才认识你</span></label>
-                            <label class="option"><input type="radio" name="q26" value="B" data-dim="E"><span>B 用很短的时间便认识你</span></label>
-                        </div>
+                </div>
+                <div class="question-item">
+                    <span class="num">7.</span>过去，我的恋人倾向对我说这些：
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q7" value="A" data-dim="E"><span>(A)你难道不可以安静一点吗？</span></label>
+                        <label class="option"><input type="radio" name="q7" value="B" data-dim="I"><span>(B)你能从自己的世界里面走出来一下吗？</span></label>
                     </div>
                 </div>
 
-                <!-- 第二部分题目 -->
-                <div class="question-group">
-                    <div class="group-title">二、在下列每一对词语中，哪一个更合你心意？</div>
-                    <!-- 第27题 -->
-                    <div class="question-item">
-                        <span class="num">27.</span>
-                        <div class="options">
-                            <label class="option"><input type="radio" name="q27" value="A" data-dim="I"><span>A 注重隐私</span></label>
-                            <label class="option"><input type="radio" name="q27" value="B" data-dim="E"><span>B 坦率开放</span></label>
-                        </div>
+                <!-- 第8-14题 N/S维度 -->
+                <div class="question-item">
+                    <span class="num">8.</span>我倾向透过以下方式形成脑海中的概念：
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q8" value="A" data-dim="N"><span>(A)我对有可能发生之事的想象和期望。</span></label>
+                        <label class="option"><input type="radio" name="q8" value="B" data-dim="S"><span>(B)我对目前状况实际认知。</span></label>
                     </div>
-                    <!-- 第28题 -->
-                    <div class="question-item">
-                        <span class="num">28.</span>
-                        <div class="options">
-                            <label class="option"><input type="radio" name="q28" value="A" data-dim="J"><span>A 预先安排的</span></label>
-                            <label class="option"><input type="radio" name="q28" value="B" data-dim="P"><span>B 无计划的</span></label>
-                        </div>
+                </div>
+                <div class="question-item">
+                    <span class="num">9.</span>在我做分析的时候，首先能意识到的是：
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q9" value="A" data-dim="N"><span>(A)我的直觉。</span></label>
+                        <label class="option"><input type="radio" name="q9" value="B" data-dim="S"><span>(B)我直接的观察和现成的经验。</span></label>
                     </div>
-                    <!-- 第29题 -->
-                    <div class="question-item">
-                        <span class="num">29.</span>
-                        <div class="options">
-                            <label class="option"><input type="radio" name="q29" value="A" data-dim="N"><span>A 抽象</span></label>
-                            <label class="option"><input type="radio" name="q29" value="B" data-dim="S"><span>B 具体</span></label>
-                        </div>
+                </div>
+                <div class="question-item">
+                    <span class="num">10.</span>在我自己的人际关系中，我一般是这样处理的：
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q10" value="A" data-dim="N"><span>(A)经常联络，因为永远有进步的空间。</span></label>
+                        <label class="option"><input type="radio" name="q10" value="B" data-dim="S"><span>(B)若它没有被破坏，别修补它。</span></label>
                     </div>
-                    <!-- 第30题 -->
-                    <div class="question-item">
-                        <span class="num">30.</span>
-                        <div class="options">
-                            <label class="option"><input type="radio" name="q30" value="A" data-dim="F"><span>A 温柔</span></label>
-                            <label class="option"><input type="radio" name="q30" value="B" data-dim="T"><span>B 坚定</span></label>
-                        </div>
+                </div>
+                <div class="question-item">
+                    <span class="num">11.</span>当我在约会觉得放松时，我倾向谈论：
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q11" value="A" data-dim="N"><span>(A)未来，关于改进或发明事物，和生活的种种可能性。例如说，我也许会谈论一个新的科学发明，或一个更好的方法来表达我的感受。</span></label>
+                        <label class="option"><input type="radio" name="q11" value="B" data-dim="S"><span>(B)实际的，具体的，关于「此时此地」的事物。例如说，我也许会在餐后谈论品酒的好方法，或我即将要参加的新奇旅程。</span></label>
                     </div>
-                    <!-- 第31题 -->
-                    <div class="question-item">
-                        <span class="num">31.</span>
-                        <div class="options">
-                            <label class="option"><input type="radio" name="q31" value="A" data-dim="T"><span>A 思考</span></label>
-                            <label class="option"><input type="radio" name="q31" value="B" data-dim="F"><span>B 感受</span></label>
-                        </div>
+                </div>
+                <div class="question-item">
+                    <span class="num">12.</span>我是这种人：
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q12" value="A" data-dim="N"><span>(A)先看整个大局面。</span></label>
+                        <label class="option"><input type="radio" name="q12" value="B" data-dim="S"><span>(B)先掌握细节。</span></label>
                     </div>
-                    <!-- 第32题 -->
-                    <div class="question-item">
-                        <span class="num">32.</span>
-                        <div class="options">
-                            <label class="option"><input type="radio" name="q32" value="A" data-dim="S"><span>A 事实</span></label>
-                            <label class="option"><input type="radio" name="q32" value="B" data-dim="N"><span>B 意念</span></label>
-                        </div>
+                </div>
+                <div class="question-item">
+                    <span class="num">13.</span>在我内心深处，我认为：
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q13" value="A" data-dim="N"><span>(A)与其活在不完美的现实中，我选择活在我的精神世界里。</span></label>
+                        <label class="option"><input type="radio" name="q13" value="B" data-dim="S"><span>(B)与其活在虚无缥缈的精神世界，我选择活在现实中。</span></label>
                     </div>
-                    <!-- 第33题 -->
-                    <div class="question-item">
-                        <span class="num">33.</span>
-                        <div class="options">
-                            <label class="option"><input type="radio" name="q33" value="A" data-dim="P"><span>A 冲动</span></label>
-                            <label class="option"><input type="radio" name="q33" value="B" data-dim="J"><span>B 决定</span></label>
-                        </div>
-                    </div>
-                    <!-- 第34题 -->
-                    <div class="question-item">
-                        <span class="num">34.</span>
-                        <div class="options">
-                            <label class="option"><input type="radio" name="q34" value="A" data-dim="E"><span>A 热衷</span></label>
-                            <label class="option"><input type="radio" name="q34" value="B" data-dim="I"><span>B 文静</span></label>
-                        </div>
-                    </div>
-                    <!-- 第35题 -->
-                    <div class="question-item">
-                        <span class="num">35.</span>
-                        <div class="options">
-                            <label class="option"><input type="radio" name="q35" value="A" data-dim="I"><span>A 文静</span></label>
-                            <label class="option"><input type="radio" name="q35" value="B" data-dim="E"><span>B 外向</span></label>
-                        </div>
-                    </div>
-                    <!-- 第36题 -->
-                    <div class="question-item">
-                        <span class="num">36.</span>
-                        <div class="options">
-                            <label class="option"><input type="radio" name="q36" value="A" data-dim="J"><span>A 有系统</span></label>
-                            <label class="option"><input type="radio" name="q36" value="B" data-dim="P"><span>B 随意</span></label>
-                        </div>
-                    </div>
-                    <!-- 第37题 -->
-                    <div class="question-item">
-                        <span class="num">37.</span>
-                        <div class="options">
-                            <label class="option"><input type="radio" name="q37" value="A" data-dim="N"><span>A 理论</span></label>
-                            <label class="option"><input type="radio" name="q37" value="B" data-dim="S"><span>B 肯定</span></label>
-                        </div>
-                    </div>
-                    <!-- 第38题 -->
-                    <div class="question-item">
-                        <span class="num">38.</span>
-                        <div class="options">
-                            <label class="option"><input type="radio" name="q38" value="A" data-dim="F"><span>A 敏感</span></label>
-                            <label class="option"><input type="radio" name="q38" value="B" data-dim="T"><span>B 公正</span></label>
-                        </div>
-                    </div>
-                    <!-- 第39题 -->
-                    <div class="question-item">
-                        <span class="num">39.</span>
-                        <div class="options">
-                            <label class="option"><input type="radio" name="q39" value="A" data-dim="T"><span>A 令人信服</span></label>
-                            <label class="option"><input type="radio" name="q39" value="B" data-dim="F"><span>B 感人的</span></label>
-                        </div>
-                    </div>
-                    <!-- 第40题 -->
-                    <div class="question-item">
-                        <span class="num">40.</span>
-                        <div class="options">
-                            <label class="option"><input type="radio" name="q40" value="A" data-dim="S"><span>A 声明</span></label>
-                            <label class="option"><input type="radio" name="q40" value="B" data-dim="N"><span>B 概念</span></label>
-                        </div>
-                    </div>
-                    <!-- 第41题 -->
-                    <div class="question-item">
-                        <span class="num">41.</span>
-                        <div class="options">
-                            <label class="option"><input type="radio" name="q41" value="A" data-dim="P"><span>A 不受约束</span></label>
-                            <label class="option"><input type="radio" name="q41" value="B" data-dim="J"><span>B 预先安排</span></label>
-                        </div>
-                    </div>
-                    <!-- 第42题 -->
-                    <div class="question-item">
-                        <span class="num">42.</span>
-                        <div class="options">
-                            <label class="option"><input type="radio" name="q42" value="A" data-dim="I"><span>A 矜持</span></label>
-                            <label class="option"><input type="radio" name="q42" value="B" data-dim="E"><span>B 健谈</span></label>
-                        </div>
-                    </div>
-                    <!-- 第43题 -->
-                    <div class="question-item">
-                        <span class="num">43.</span>
-                        <div class="options">
-                            <label class="option"><input type="radio" name="q43" value="A" data-dim="J"><span>A 有条不紊</span></label>
-                            <label class="option"><input type="radio" name="q43" value="B" data-dim="P"><span>B 不拘小节</span></label>
-                        </div>
-                    </div>
-                    <!-- 第44题 -->
-                    <div class="question-item">
-                        <span class="num">44.</span>
-                        <div class="options">
-                            <label class="option"><input type="radio" name="q44" value="A" data-dim="N"><span>A 意念</span></label>
-                            <label class="option"><input type="radio" name="q44" value="B" data-dim="S"><span>B 实况</span></label>
-                        </div>
-                    </div>
-                    <!-- 第45题 -->
-                    <div class="question-item">
-                        <span class="num">45.</span>
-                        <div class="options">
-                            <label class="option"><input type="radio" name="q45" value="A" data-dim="F"><span>A 同情怜悯</span></label>
-                            <label class="option"><input type="radio" name="q45" value="B" data-dim="T"><span>B 远见</span></label>
-                        </div>
-                    </div>
-                    <!-- 第46题 -->
-                    <div class="question-item">
-                        <span class="num">46.</span>
-                        <div class="options">
-                            <label class="option"><input type="radio" name="q46" value="A" data-dim="T"><span>A 利益</span></label>
-                            <label class="option"><input type="radio" name="q46" value="B" data-dim="F"><span>B 祝福</span></label>
-                        </div>
-                    </div>
-                    <!-- 第47题 -->
-                    <div class="question-item">
-                        <span class="num">47.</span>
-                        <div class="options">
-                            <label class="option"><input type="radio" name="q47" value="A" data-dim="S"><span>A 务实的</span></label>
-                            <label class="option"><input type="radio" name="q47" value="B" data-dim="N"><span>B 理论的</span></label>
-                        </div>
-                    </div>
-                    <!-- 第48题 -->
-                    <div class="question-item">
-                        <span class="num">48.</span>
-                        <div class="options">
-                            <label class="option"><input type="radio" name="q48" value="A" data-dim="I"><span>A 朋友不多</span></label>
-                            <label class="option"><input type="radio" name="q48" value="B" data-dim="E"><span>B 朋友众多</span></label>
-                        </div>
-                    </div>
-                    <!-- 第49题 -->
-                    <div class="question-item">
-                        <span class="num">49.</span>
-                        <div class="options">
-                            <label class="option"><input type="radio" name="q49" value="A" data-dim="J"><span>A 有系统</span></label>
-                            <label class="option"><input type="radio" name="q49" value="B" data-dim="P"><span>B 即兴</span></label>
-                        </div>
-                    </div>
-                    <!-- 第50题 -->
-                    <div class="question-item">
-                        <span class="num">50.</span>
-                        <div class="options">
-                            <label class="option"><input type="radio" name="q50" value="A" data-dim="N"><span>A 富想象的</span></label>
-                            <label class="option"><input type="radio" name="q50" value="B" data-dim="S"><span>B 以事论事</span></label>
-                        </div>
-                    </div>
-                    <!-- 第51题 -->
-                    <div class="question-item">
-                        <span class="num">51.</span>
-                        <div class="options">
-                            <label class="option"><input type="radio" name="q51" value="A" data-dim="F"><span>A 亲切的</span></label>
-                            <label class="option"><input type="radio" name="q51" value="B" data-dim="T"><span>B 客观的</span></label>
-                        </div>
-                    </div>
-                    <!-- 第52题 -->
-                    <div class="question-item">
-                        <span class="num">52.</span>
-                        <div class="options">
-                            <label class="option"><input type="radio" name="q52" value="A" data-dim="T"><span>A 客观的</span></label>
-                            <label class="option"><input type="radio" name="q52" value="B" data-dim="F"><span>B 热情的</span></label>
-                        </div>
-                    </div>
-                    <!-- 第53题 -->
-                    <div class="question-item">
-                        <span class="num">53.</span>
-                        <div class="options">
-                            <label class="option"><input type="radio" name="q53" value="A" data-dim="S"><span>A 建造</span></label>
-                            <label class="option"><input type="radio" name="q53" value="B" data-dim="N"><span>B 发明</span></label>
-                        </div>
-                    </div>
-                    <!-- 第54题 -->
-                    <div class="question-item">
-                        <span class="num">54.</span>
-                        <div class="options">
-                            <label class="option"><input type="radio" name="q54" value="A" data-dim="I"><span>A 文静</span></label>
-                            <label class="option"><input type="radio" name="q54" value="B" data-dim="E"><span>B 爱合群</span></label>
-                        </div>
-                    </div>
-                    <!-- 第55题 -->
-                    <div class="question-item">
-                        <span class="num">55.</span>
-                        <div class="options">
-                            <label class="option"><input type="radio" name="q55" value="A" data-dim="N"><span>A 理论</span></label>
-                            <label class="option"><input type="radio" name="q55" value="B" data-dim="S"><span>B 事实</span></label>
-                        </div>
-                    </div>
-                    <!-- 第56题 -->
-                    <div class="question-item">
-                        <span class="num">56.</span>
-                        <div class="options">
-                            <label class="option"><input type="radio" name="q56" value="A" data-dim="F"><span>A 富同情</span></label>
-                            <label class="option"><input type="radio" name="q56" value="B" data-dim="T"><span>B 合逻辑</span></label>
-                        </div>
-                    </div>
-                    <!-- 第57题 -->
-                    <div class="question-item">
-                        <span class="num">57.</span>
-                        <div class="options">
-                            <label class="option"><input type="radio" name="q57" value="A" data-dim="T"><span>A 具分析力</span></label>
-                            <label class="option"><input type="radio" name="q57" value="B" data-dim="F"><span>B 多愁善感</span></label>
-                        </div>
-                    </div>
-                    <!-- 第58题 -->
-                    <div class="question-item">
-                        <span class="num">58.</span>
-                        <div class="options">
-                            <label class="option"><input type="radio" name="q58" value="A" data-dim="S"><span>A 合情合理</span></label>
-                            <label class="option"><input type="radio" name="q58" value="B" data-dim="N"><span>B 令人着迷</span></label>
-                        </div>
+                </div>
+                <div class="question-item">
+                    <span class="num">14.</span>我通常：
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q14" value="A" data-dim="N"><span>(A)偏向于去想象一大堆关于即将来临之约会的事情。</span></label>
+                        <label class="option"><input type="radio" name="q14" value="B" data-dim="S"><span>(B)偏向于拘紧地想象即将来临的约会，只期待让它自然地发生。</span></label>
                     </div>
                 </div>
 
-                <!-- 第三部分题目 -->
-                <div class="question-group">
-                    <div class="group-title">三、哪一个答案最能贴切地描绘你一般的感受或行为？</div>
-                    <!-- 第59题 -->
-                    <div class="question-item">
-                        <span class="num">59.</span>当你要在一个星期内完成一个大项目，你在开始的时候会
-                        <div class="options">
-                            <label class="option"><input type="radio" name="q59" value="A" data-dim="J"><span>A 把要做的不同工作依次列出</span></label>
-                            <label class="option"><input type="radio" name="q59" value="B" data-dim="P"><span>B 马上动工</span></label>
-                        </div>
+                <!-- 第15-21题 F/T维度 -->
+                <div class="question-item">
+                    <span class="num">15.</span>我倾向如此做决定：
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q15" value="A" data-dim="F"><span>(A)首先依我的心意，然后依我的逻辑。</span></label>
+                        <label class="option"><input type="radio" name="q15" value="B" data-dim="T"><span>(B)首先依我的逻辑，然后依我的心意。</span></label>
                     </div>
-                    <!-- 第60题 -->
-                    <div class="question-item">
-                        <span class="num">60.</span>在社交场合中，你经常会感到
-                        <div class="options">
-                            <label class="option"><input type="radio" name="q60" value="A" data-dim="I"><span>A 与某些人很难打开话匣儿和保持对话</span></label>
-                            <label class="option"><input type="radio" name="q60" value="B" data-dim="E"><span>B 与多数人都能从容地长谈</span></label>
-                        </div>
+                </div>
+                <div class="question-item">
+                    <span class="num">16.</span>我倾向比较能够察觉到：
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q16" value="A" data-dim="F"><span>(A)当人们需要情感上的支持时。</span></label>
+                        <label class="option"><input type="radio" name="q16" value="B" data-dim="T"><span>(B)当人们不合逻辑时。</span></label>
                     </div>
-                    <!-- 第61题 -->
-                    <div class="question-item">
-                        <span class="num">61.</span>要做许多人也做的事，你比较喜欢
-                        <div class="options">
-                            <label class="option"><input type="radio" name="q61" value="A" data-dim="S"><span>A 按照一般认可的方法去做</span></label>
-                            <label class="option"><input type="radio" name="q61" value="B" data-dim="N"><span>B 构想一个自己的想法</span></label>
-                        </div>
+                </div>
+                <div class="question-item">
+                    <span class="num">17.</span>当自己和某人分手时：
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q17" value="A" data-dim="F"><span>(A)我的情绪深陷其中，很难才能抽身而出。</span></label>
+                        <label class="option"><input type="radio" name="q17" value="B" data-dim="T"><span>(B)虽然我觉得受伤，但一旦下定决心，我会直截了当地将过去恋人的影子甩开。</span></label>
                     </div>
-                    <!-- 第62题 -->
-                    <div class="question-item">
-                        <span class="num">62.</span>你刚认识的朋友能否说出你的兴趣？
-                        <div class="options">
-                            <label class="option"><input type="radio" name="q62" value="A" data-dim="E"><span>A 马上可以</span></label>
-                            <label class="option"><input type="radio" name="q62" value="B" data-dim="I"><span>B 要待他们真正了解你之后才可以</span></label>
-                        </div>
+                </div>
+                <div class="question-item">
+                    <span class="num">18.</span>当与一个人交往时，我倾向评量：
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q18" value="A" data-dim="F"><span>(A)情感上的兼容性：表达爱意和对另一半的需求很敏感。</span></label>
+                        <label class="option"><input type="radio" name="q18" value="B" data-dim="T"><span>(B)智能上的兼容性：沟通重要的想法：客观地讨论和辩论事情。</span></label>
                     </div>
-                    <!-- 第63题 -->
-                    <div class="question-item">
-                        <span class="num">63.</span>你通常较喜欢的科目是
-                        <div class="options">
-                            <label class="option"><input type="radio" name="q63" value="A" data-dim="N"><span>A 讲授概念和原则的</span></label>
-                            <label class="option"><input type="radio" name="q63" value="B" data-dim="S"><span>B 讲授事实和数据的</span></label>
-                        </div>
+                </div>
+                <div class="question-item">
+                    <span class="num">19.</span>当我不同意我恋人的想法时：
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q19" value="A" data-dim="F"><span>(A)我尽可能地避免伤害对方的感受；若是会对对方造成伤害的话，我就不会说。</span></label>
+                        <label class="option"><input type="radio" name="q19" value="B" data-dim="T"><span>(B)我通常很直接，毫无保留地把事实和我的逻辑告诉对方，因为对的就是对的。</span></label>
                     </div>
-                    <!-- 第64题 -->
-                    <div class="question-item">
-                        <span class="num">64.</span>哪个是较高的赞誉，或称许为？
-                        <div class="options">
-                            <label class="option"><input type="radio" name="q64" value="A" data-dim="F"><span>A 一贯感性的人</span></label>
-                            <label class="option"><input type="radio" name="q64" value="B" data-dim="T"><span>B 一贯理性的人</span></label>
-                        </div>
+                </div>
+                <div class="question-item">
+                    <span class="num">20.</span>认识我的人倾向形容我为：
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q20" value="A" data-dim="F"><span>(A)热情和敏感。</span></label>
+                        <label class="option"><input type="radio" name="q20" value="B" data-dim="T"><span>(B)逻辑和明确。</span></label>
                     </div>
-                    <!-- 第65题 -->
-                    <div class="question-item">
-                        <span class="num">65.</span>你认为按照程序表做事
-                        <div class="options">
-                            <label class="option"><input type="radio" name="q65" value="A" data-dim="P"><span>A 有时是需要的，但一般来说你不大喜欢这样做</span></label>
-                            <label class="option"><input type="radio" name="q65" value="B" data-dim="J"><span>B 大多数情况下是有帮助而且是你喜欢做的</span></label>
-                        </div>
-                    </div>
-                    <!-- 第66题 -->
-                    <div class="question-item">
-                        <span class="num">66.</span>和一群人在一起，你通常会选
-                        <div class="options">
-                            <label class="option"><input type="radio" name="q66" value="A" data-dim="I"><span>A 跟你很熟悉的个别人谈话</span></label>
-                            <label class="option"><input type="radio" name="q66" value="B" data-dim="E"><span>B 参与大伙的谈话</span></label>
-                        </div>
-                    </div>
-                    <!-- 第67题 -->
-                    <div class="question-item">
-                        <span class="num">67.</span>在社交聚会上，你会
-                        <div class="options">
-                            <label class="option"><input type="radio" name="q67" value="A" data-dim="E"><span>A 是说话很多的一个</span></label>
-                            <label class="option"><input type="radio" name="q67" value="B" data-dim="I"><span>B 让别人多说话</span></label>
-                        </div>
-                    </div>
-                    <!-- 第68题 -->
-                    <div class="question-item">
-                        <span class="num">68.</span>把周末期间要完成的事列成清单，这个主意会
-                        <div class="options">
-                            <label class="option"><input type="radio" name="q68" value="A" data-dim="J"><span>A 合你意</span></label>
-                            <label class="option"><input type="radio" name="q68" value="B" data-dim="P"><span>B 使你提不起劲</span></label>
-                        </div>
-                    </div>
-                    <!-- 第69题 -->
-                    <div class="question-item">
-                        <span class="num">69.</span>哪个是较高的赞誉，或称许为
-                        <div class="options">
-                            <label class="option"><input type="radio" name="q69" value="A" data-dim="T"><span>A 能干的</span></label>
-                            <label class="option"><input type="radio" name="q69" value="B" data-dim="F"><span>B 富有同情心</span></label>
-                        </div>
-                    </div>
-                    <!-- 第70题 -->
-                    <div class="question-item">
-                        <span class="num">70.</span>你通常喜欢
-                        <div class="options">
-                            <label class="option"><input type="radio" name="q70" value="A" data-dim="J"><span>A 事先安排你的社交约会</span></label>
-                            <label class="option"><input type="radio" name="q70" value="B" data-dim="P"><span>B 随兴之所至做事</span></label>
-                        </div>
-                    </div>
-                    <!-- 第71题 -->
-                    <div class="question-item">
-                        <span class="num">71.</span>总的说来，要做一个大型作业时，你会选
-                        <div class="options">
-                            <label class="option"><input type="radio" name="q71" value="A" data-dim="P"><span>A 边做边想该做什么</span></label>
-                            <label class="option"><input type="radio" name="q71" value="B" data-dim="J"><span>B 首先把工作按步细分</span></label>
-                        </div>
-                    </div>
-                    <!-- 第72题 -->
-                    <div class="question-item">
-                        <span class="num">72.</span>你能否滔滔不绝地与人聊天
-                        <div class="options">
-                            <label class="option"><input type="radio" name="q72" value="A" data-dim="I"><span>A 只限于跟你有共同兴趣的人</span></label>
-                            <label class="option"><input type="radio" name="q72" value="B" data-dim="E"><span>B 几乎跟任何人都可以</span></label>
-                        </div>
-                    </div>
-                    <!-- 第73题 -->
-                    <div class="question-item">
-                        <span class="num">73.</span>你会
-                        <div class="options">
-                            <label class="option"><input type="radio" name="q73" value="A" data-dim="S"><span>A 跟随一些证明有效的方法</span></label>
-                            <label class="option"><input type="radio" name="q73" value="B" data-dim="N"><span>B 分析还有什么毛病，及针对尚未解决的难题</span></label>
-                        </div>
-                    </div>
-                    <!-- 第74题 -->
-                    <div class="question-item">
-                        <span class="num">74.</span>为乐趣而阅读时，你会
-                        <div class="options">
-                            <label class="option"><input type="radio" name="q74" value="A" data-dim="N"><span>A 喜欢奇特或创新的表达方式</span></label>
-                            <label class="option"><input type="radio" name="q74" value="B" data-dim="S"><span>B 喜欢作者直话直说</span></label>
-                        </div>
-                    </div>
-                    <!-- 第75题 -->
-                    <div class="question-item">
-                        <span class="num">75.</span>你宁愿替哪一类上司（或者老师）工作？
-                        <div class="options">
-                            <label class="option"><input type="radio" name="q75" value="A" data-dim="F"><span>A 天性淳良，但常常前后不一的</span></label>
-                            <label class="option"><input type="radio" name="q75" value="B" data-dim="T"><span>B 言词尖锐但永远合乎逻辑的</span></label>
-                        </div>
-                    </div>
-                    <!-- 第76题 -->
-                    <div class="question-item">
-                        <span class="num">76.</span>你做事多数是
-                        <div class="options">
-                            <label class="option"><input type="radio" name="q76" value="A" data-dim="P"><span>A 按当天心情去做</span></label>
-                            <label class="option"><input type="radio" name="q76" value="B" data-dim="J"><span>B 照拟好的程序表去做</span></label>
-                        </div>
-                    </div>
-                    <!-- 第77题 -->
-                    <div class="question-item">
-                        <span class="num">77.</span>你是否
-                        <div class="options">
-                            <label class="option"><input type="radio" name="q77" value="A" data-dim="E"><span>A 可以和任何人按需求从容地交谈</span></label>
-                            <label class="option"><input type="radio" name="q77" value="B" data-dim="I"><span>B 只是对某些人或在某种情况下才可以畅所欲言</span></label>
-                        </div>
-                    </div>
-                    <!-- 第78题 -->
-                    <div class="question-item">
-                        <span class="num">78.</span>要作决定时，你认为比较重要的是
-                        <div class="options">
-                            <label class="option"><input type="radio" name="q78" value="A" data-dim="T"><span>A 据事实衡量</span></label>
-                            <label class="option"><input type="radio" name="q78" value="B" data-dim="F"><span>B 考虑他人的感受和意见</span></label>
-                        </div>
+                </div>
+                <div class="question-item">
+                    <span class="num">21.</span>我认为自己和很多人的相遇是：
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q21" value="A" data-dim="F"><span>(A)随意的，友善的及重要的。</span></label>
+                        <label class="option"><input type="radio" name="q21" value="B" data-dim="T"><span>(B)经过思考的，或多或少有一定目的性。</span></label>
                     </div>
                 </div>
 
-                <!-- 第四部分题目 -->
-                <div class="question-group">
-                    <div class="group-title">四、在下列每一对词语中，哪一个更合你心意？</div>
-                    <!-- 第79题 -->
-                    <div class="question-item">
-                        <span class="num">79.</span>
-                        <div class="options">
-                            <label class="option"><input type="radio" name="q79" value="A" data-dim="N"><span>A 想象的</span></label>
-                            <label class="option"><input type="radio" name="q79" value="B" data-dim="S"><span>B 真实的</span></label>
-                        </div>
+                <!-- 第22-28题 J/P维度 -->
+                <div class="question-item">
+                    <span class="num">22.</span>若我有时间和金钱，我的朋友邀请我到国外度假，并且在一天前才通知，我会：
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q22" value="A" data-dim="J"><span>(A)必须先检查我的时间表。</span></label>
+                        <label class="option"><input type="radio" name="q22" value="B" data-dim="P"><span>(B)立即收拾行装。</span></label>
                     </div>
-                    <!-- 第80题 -->
-                    <div class="question-item">
-                        <span class="num">80.</span>
-                        <div class="options">
-                            <label class="option"><input type="radio" name="q80" value="A" data-dim="F"><span>A 仁慈慷慨的</span></label>
-                            <label class="option"><input type="radio" name="q80" value="B" data-dim="T"><span>B 意志坚定的</span></label>
-                        </div>
+                </div>
+                <div class="question-item">
+                    <span class="num">23.</span>在第一次约会中：
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q23" value="A" data-dim="J"><span>(A)若我所约的人来迟了，我心里会很不高兴。</span></label>
+                        <label class="option"><input type="radio" name="q23" value="B" data-dim="P"><span>(B)即使所约的人来迟了，我一点都不放在心里。</span></label>
                     </div>
-                    <!-- 第81题 -->
-                    <div class="question-item">
-                        <span class="num">81.</span>
-                        <div class="options">
-                            <label class="option"><input type="radio" name="q81" value="A" data-dim="T"><span>A 公正的</span></label>
-                            <label class="option"><input type="radio" name="q81" value="B" data-dim="F"><span>B 有关怀心</span></label>
-                        </div>
+                </div>
+                <div class="question-item">
+                    <span class="num">24.</span>我偏好：
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q24" value="A" data-dim="J"><span>(A)事先知道约会的行程：要去哪里、有谁参加、我会在哪里多久、该如何打扮。</span></label>
+                        <label class="option"><input type="radio" name="q24" value="B" data-dim="P"><span>(B)让约会自然地发生，不做先前太多的计划。</span></label>
                     </div>
-                    <!-- 第82题 -->
-                    <div class="question-item">
-                        <span class="num">82.</span>
-                        <div class="options">
-                            <label class="option"><input type="radio" name="q82" value="A" data-dim="S"><span>A 制作</span></label>
-                            <label class="option"><input type="radio" name="q82" value="B" data-dim="N"><span>B 设计</span></label>
-                        </div>
+                </div>
+                <div class="question-item">
+                    <span class="num">25.</span>我期待的生活包含着：
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q25" value="A" data-dim="J"><span>(A)科学合理的安排和有毅力的执行。</span></label>
+                        <label class="option"><input type="radio" name="q25" value="B" data-dim="P"><span>(B)没有什么压力，所有事情自然发生和时间弹性很大。</span></label>
                     </div>
-                    <!-- 第83题 -->
-                    <div class="question-item">
-                        <span class="num">83.</span>
-                        <div class="options">
-                            <label class="option"><input type="radio" name="q83" value="A" data-dim="N"><span>A 可能性</span></label>
-                            <label class="option"><input type="radio" name="q83" value="B" data-dim="S"><span>B 必然性</span></label>
-                        </div>
+                </div>
+                <div class="question-item">
+                    <span class="num">26.</span>哪一项较为常见：
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q26" value="A" data-dim="J"><span>(A)我先入会场而其它人随后来到。</span></label>
+                        <label class="option"><input type="radio" name="q26" value="B" data-dim="P"><span>(B)大部分人都先到而我最后一个来。</span></label>
                     </div>
-                    <!-- 第84题 -->
-                    <div class="question-item">
-                        <span class="num">84.</span>
-                        <div class="options">
-                            <label class="option"><input type="radio" name="q84" value="A" data-dim="F"><span>A 温柔</span></label>
-                            <label class="option"><input type="radio" name="q84" value="B" data-dim="T"><span>B 力量</span></label>
-                        </div>
+                </div>
+                <div class="question-item">
+                    <span class="num">27.</span>我是这样喜欢……的人：
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q27" value="A" data-dim="J"><span>(A)快刀斩乱麻，下定决心并且做出最后肯定的结论。</span></label>
+                        <label class="option"><input type="radio" name="q27" value="B" data-dim="P"><span>(B)放开我的选择并且持续收集信息，这样结果会更准确和深刻。</span></label>
                     </div>
-                    <!-- 第85题 -->
-                    <div class="question-item">
-                        <span class="num">85.</span>
-                        <div class="options">
-                            <label class="option"><input type="radio" name="q85" value="A" data-dim="T"><span>A 实际</span></label>
-                            <label class="option"><input type="radio" name="q85" value="B" data-dim="F"><span>B 多愁善感</span></label>
-                        </div>
+                </div>
+                <div class="question-item">
+                    <span class="num">28.</span>我是这类型的人：
+                    <div class="options">
+                        <label class="option"><input type="radio" name="q28" value="A" data-dim="J"><span>(A)喜欢在一个时间里专心于一件事情直到完成。</span></label>
+                        <label class="option"><input type="radio" name="q28" value="B" data-dim="P"><span>(B)喜欢同时进行好几件事情。</span></label>
                     </div>
-                    <!-- 第86题 -->
-                    <div class="question-item">
-                        <span class="num">86.</span>
-                        <div class="options">
-                            <label class="option"><input type="radio" name="q86" value="A" data-dim="S"><span>A 制造</span></label>
-                            <label class="option"><input type="radio" name="q86" value="B" data-dim="N"><span>B 创造</span></label>
-                        </div>
-                    </div>
-                    <!-- 第87题 -->
-                    <div class="question-item">
-                        <span class="num">87.</span>
-                        <div class="options">
-                            <label class="option"><input type="radio" name="q87" value="A" data-dim="N"><span>A 新颖的</span></label>
-                            <label class="option"><input type="radio" name="q87" value="B" data-dim="S"><span>B 已知的</span></label>
-                        </div>
-                    </div>
-                    <!-- 第88题 -->
-                    <div class="question-item">
-                        <span class="num">88.</span>
-                        <div class="options">
-                            <label class="option"><input type="radio" name="q88" value="A" data-dim="F"><span>A 同情</span></label>
-                            <label class="option"><input type="radio" name="q88" value="B" data-dim="T"><span>B 分析</span></label>
-                        </div>
-                    </div>
-                    <!-- 第89题 -->
-                    <div class="question-item">
-                        <span class="num">89.</span>
-                        <div class="options">
-                            <label class="option"><input type="radio" name="q89" value="A" data-dim="T"><span>A 坚持己见</span></label>
-                            <label class="option"><input type="radio" name="q89" value="B" data-dim="F"><span>B 温柔有爱心</span></label>
-                        </div>
-                    </div>
-                    <!-- 第90题 -->
-                    <div class="question-item">
-                        <span class="num">90.</span>
-                        <div class="options">
-                            <label class="option"><input type="radio" name="q90" value="A" data-dim="S"><span>A 具体的</span></label>
-                            <label class="option"><input type="radio" name="q90" value="B" data-dim="N"><span>B 抽象的</span></label>
-                        </div>
-                    </div>
-                    <!-- 第91题 -->
-                    <div class="question-item">
-                        <span class="num">91.</span>
-                        <div class="options">
-                            <label class="option"><input type="radio" name="q91" value="A" data-dim="F"><span>A 全心投入</span></label>
-                            <label class="option"><input type="radio" name="q91" value="B" data-dim="T"><span>B 有决心的</span></label>
-                        </div>
-                    </div>
-                    <!-- 第92题 -->
-                    <div class="question-item">
-                        <span class="num">92.</span>
-                        <div class="options">
-                            <label class="option"><input type="radio" name="q92" value="A" data-dim="T"><span>A 能干</span></label>
-                            <label class="option"><input type="radio" name="q92" value="B" data-dim="F"><span>B 仁慈</span></label>
-                        </div
+                </div>
+
+                <button type="button" class="submit-btn" onclick="calcResult()">提交并查看测试结果</button>
+            </form>
+
+            <!-- 结果展示区域 -->
+            <div class="result-section" id="resultBox">
+                <div class="result-title">你的MBTI性格测试结果</div>
+                <div class="score-detail" id="scoreDetail"></div>
+                <div class="type-result" id="finalType"></div>
+                <div class="personality-desc" id="personalityDesc">
+                    <h4>人格类型解读</h4>
+                    <p>加载中...</p>
+                </div>
+                <div class="usage-desc">
+                    <h3>结果说明</h3>
+                    <p>1、本结果基于28题简版测试，严格遵循计分规则，仅作性格参考与职业规划辅助，非专业心理诊断；</p>
+                    <p>2、性格类型无优劣之分，建议结合自身实际，发挥优势、规避短板；</p>
+                    <p>3、中国人90%以上性格偏向内倾，测试结果需理性看待，勿过度标签化。</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 固定密码（可自行修改）
+        const FIXED_PASSWORD = "mbti28test";
+
+        // 密码验证函数
+        function checkPassword() {
+            const inputVal = document.getElementById("passwordInput").value.trim();
+            const errorTip = document.getElementById("errorTip");
+            if (inputVal === FIXED_PASSWORD) {
+                document.querySelector(".password-section").style.display = "none";
+                document.querySelector(".test-content").style.display = "block";
+                errorTip.style.display = "none";
+            } else {
+                errorTip.style.display = "block";
+            }
+        }
+
+        // 16种人格解读与适合职业
+        const personalityMap = {
+            "ISTJ": {
+                desc: "严肃、少言、依靠精力集中，通过全面性和可靠性获得成功。注重实践、有秩序、实事求是、有逻辑、现实、值得信赖。喜欢将工作、家庭和生活都安排得井井有条。重视传统和忠诚。",
+                career: "首席信息系统执行官、天文学家、数据库管理、会计、房地产经纪人、侦探、行政管理、信用分析师"
+            },
+            "ISFJ": {
+                desc: "少言、友善、有责任感和良知。坚定地致力于完成义务，能使任何项目和群体更稳定。忠诚、体贴、周到、刻苦、精确，关心他人感受，努力营造有序而温馨的环境。",
+                career: "内科医生、营养师、图书/档案管理员、室内装潢设计师、客户服务专员、记账员、特殊教育教师、酒店管理"
+            },
+            "INFJ": {
+                desc: "沉静地坚强、责任心强、关心他人、富创造力，坚持价值观。全力投入工作，因坚定原则受尊重。对人有很强洞察力，有清晰远景，目标实现过程中有计划且果断。",
+                career: "特殊教育教师、建筑设计师、培训经理/培训师、职业策划咨询顾问、心理咨询师、网站编辑、作家、仲裁人"
+            },
+            "INTJ": {
+                desc: "具有创造性思想，大力推动自己的主意和目标。目光远大、能洞察事物规律并形成长期远景计划。一旦决定便规划到底，在擅长领域组织工作能力强，批判性、独立性强。",
+                career: "首席财政执行官、知识产权律师、设计工程师、精神分析师、心脏病专家、媒体策划、网络管理员、建筑师"
+            },
+            "ISTP": {
+                desc: "安静的观察者，有问题发生时马上行动。自制、好奇心强、幽默，分析事物运作原理，对因果感兴趣，能快速找到关键症结，用逻辑处理问题，重视效率。",
+                career: "信息服务业经理、计算机程序员、警官、软件开发员、律师助理、消防员、私人侦探、药剂师"
+            },
+            "ISFP": {
+                desc: "羞怯、友善、敏感、和谐、谦虚。不喜欢争论冲突，不强加价值观，喜欢自己的空间和自由时间表。对价值观和重要的人忠诚有责任心，享受眼前乐趣。",
+                career: "室内装潢设计师、按摩师、客户服务专员、服装设计师、厨师、护士、牙医、旅游管理"
+            },
+            "INFP": {
+                desc: "沉稳的观察者、理想主义、忠实，希望外部生活与内心价值观统一。有求知欲，能看到事情可能性，善于适应、灵活、包容，谅解他人，关注人潜力发挥。",
+                career: "心理学家、人力资源管理、翻译、大学教师（人文学科）、社会工作者、图书管理员、服装设计师、编辑/网站设计师"
+            },
+            "INTP": {
+                desc: "安静、内向、灵活、适应力强。喜欢理论和抽象事物，热衷于思考而非社交。对感兴趣领域有超凡专注力和深度解决问题能力，多疑、挑剔、善于分析。",
+                career: "软件设计师、风险投资家、法律仲裁人、金融分析师、大学教师（经济学）、音乐家、知识产权律师、网站设计师"
+            },
+            "ESTP": {
+                desc: "擅长现场解决问题，注重当前，自然不做作。喜欢行动，不喜解释，享受和他人在一起的时刻。善应变、容忍、重实效，注重结果，喜好交际事物和物质享受。",
+                career: "企业家、股票经纪人、保险经纪人、土木工程师、旅游管理、职业运动员/教练、电子游戏开发员、房产开发商"
+            },
+            "ESFP": {
+                desc: "开朗、随和、友善、接受力强。热爱生活、人类和物质享受。喜欢和别人一起成功，积极参与事务，讲究常识和实用性，使工作有趣，适应力强。",
+                career: "幼教老师、公关专员、职业策划咨询师、旅游管理/导游、促销员、演员、海洋生物学家、销售"
+            },
+            "ENFP": {
+                desc: "热情洋溢、极富朝气、机敏、富于想象力，认为人生有很多可能性。能快速联系信息并自信解决问题，即兴发挥能力强，言语流畅，需要他人认可并乐于帮助他人。",
+                career: "广告客户管理、管理咨询顾问、演员、平面设计师、艺术指导、公司团队培训师、心理学家、人力资源管理"
+            },
+            "ENTP": {
+                desc: "敏捷、睿智、有发明天才，长于许多事情。有激励他人能力、机警、直言不讳，善于解决挑战性问题，不喜欢例行公事，思维灵活，善于理解别人。",
+                career: "企业家、投资银行家、广告创意总监、市场管理咨询顾问、文案、广播/电视主持人、演员、大学校长"
+            },
+            "ESTJ": {
+                desc: "实际、现实主义、果断、迅速行动执行决定。有商业或机械学头脑，对抽象理论不感兴趣。善于组织项目和人完成事情，效率高，优秀领导人，注重细节和逻辑标准。",
+                career: "公司首席执行官、军官、预算分析师、药剂师、房地产经纪人、保险经纪人、教师（贸易/工商类）、物业管理"
+            },
+            "ESFJ": {
+                desc: "热心、健谈、受欢迎、有责任心、天生合作者。要求和谐并创造和谐，喜欢和他人精确及时完成任务，事无巨细保持忠诚，体察他人需求并帮助，受鼓励时工作出色。",
+                career: "房地产经纪人、零售商、护士、理货员/采购、按摩师、运动教练、饮食业管理、旅游管理"
+            },
+            "ENFJ": {
+                desc: "敏感、热情、为他人着想、有责任心。真正关心他人所想所愿，善于发现他人潜能并帮助实现，考虑他人感情，能成为成长催化剂，喜社交、有同情心。",
+                career: "广告客户管理、杂志编辑、公司培训师、电视制片人、市场专员、作家、社会工作者、人力资源管理"
+            },
+            "ENTJ": {
+                desc: "直率、果断，有天生领导能力。能快速发现不合理性和低效能，实施有效系统解决问题。善于长期计划和目标设定，长于论据和机智谈吐，见多识广、强而有力。",
+                career: "公司首席执行官、管理咨询顾问、政治家、房产开发商、教育咨询顾问、投资顾问、法官"
+            }
+        };
+
+        // 计分与结果计算
+        function calcResult() {
+            const form = document.forms['mbtiForm'];
+            const totalQuestions = 28;
+            let scores = { E: 0, I: 0, N: 0, S: 0, F: 0, T: 0, J: 0, P: 0 };
+            let isComplete = true;
+
+            // 校验并统计得分
+            for (let i = 1; i <= totalQuestions; i++) {
+                const radios = form[`q${i}`];
+                let checkedRadio = null;
+                for (let radio of radios) {
+                    if (radio.checked) {
+                        checkedRadio = radio;
+                        break;
+                    }
+                }
+                if (!checkedRadio) {
+                    alert(`请完成第${i}题作答，所有题目均为必答题`);
+                    isComplete = false;
+                    return;
+                }
+                const dim = checkedRadio.getAttribute('data-dim');
+                scores[dim]++;
+            }
+
+            if (isComplete) {
+                // 确定各维度倾向
+                const ei = scores.E >= scores.I ? 'E' : 'I';
+                const ns = scores.N >= scores.S ? 'N' : 'S';
+                const ft = scores.F >= scores.T ? 'F' : 'T';
+                const jp = scores.J >= scores.P ? 'J' : 'P';
+                const mbtiType = ei + ns + ft + jp;
+
+                // 偏好强度说明
+                const getLevel = (score) => {
+                    if (score === 4) return '中度偏好';
+                    if (score === 5 || score === 6) return '渐强偏好';
+                    if (score === 7) return '极强偏好';
+                    return '均衡倾向';
+                };
+
+                // 渲染结果
+                document.getElementById('scoreDetail').innerHTML = `
+                    外向(E)：${scores.E}分 &nbsp;&nbsp; 内向(I)：${scores.I}分 &nbsp;&nbsp; 偏好：${ei}（${getLevel(Math.max(scores.E, scores.I))}）<br>
+                    直觉(N)：${scores.N}分 &nbsp;&nbsp; 感觉(S)：${scores.S}分 &nbsp;&nbsp; 偏好：${ns}（${getLevel(Math.max(scores.N, scores.S))}）<br>
+                    情感(F)：${scores.F}分 &nbsp;&nbsp; 思维(T)：${scores.T}分 &nbsp;&nbsp; 偏好：${ft}（${getLevel(Math.max(scores.F, scores.T))}）<br>
+                    判断(J)：${scores.J}分 &nbsp;&nbsp; 感知(P)：${scores.P}分 &nbsp;&nbsp; 偏好：${jp}（${getLevel(Math.max(scores.J, scores.P))}）
+                `;
+                document.getElementById('finalType').innerText = `你的MBTI人格类型：${mbtiType}`;
+
+                // 渲染人格解读
+                const personality = personalityMap[mbtiType] || { desc: "暂无详细解读，可参考MBTI通用性格分析", career: "适合多种职业，建议结合自身兴趣与能力选择" };
+                document.getElementById('personalityDesc').innerHTML = `
+                    <h4>${mbtiType} 人格类型解读</h4>
+                    <p><strong>性格特点：</strong>${personality.desc}</p>
+                    <p><strong>适合职业：</strong>${personality.career}</p>
+                `;
+
+                // 显示结果并滚动
+                document.getElementById('resultBox').style.display = 'block';
+                document.getElementById('resultBox').scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+    </script>
+</body>
+</html>
