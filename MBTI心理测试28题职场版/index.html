@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MBTI 性格测试 (28题精简版)</title>
+    <style>
+        :root {
+            --primary-color: #4a90e2;
+            --primary-hover: #357abd;
+            --bg-color: #f4f7f6;
+            --card-bg: #ffffff;
+            --text-color: #333333;
+            --text-light: #666666;
+            --success-color: #2ecc71;
+            --error-color: #e74c3c;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --radius: 8px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* 布局容器 */
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            flex: 1;
+            width: 100%;
+        }
+
+        /* 头部样式 */
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px 0;
+        }
+
+        h1 {
+            color: var(--primary-color);
+            margin-bottom: 10px;
+            font-size: 1.8rem;
+        }
+
+        h2 {
+            font-size: 1.4rem;
+            margin-bottom: 15px;
+            color: #2c3e50;
+        }
+
+        p {
+            margin-bottom: 15px;
+            color: var(--text-light);
+            text-align: justify;
+        }
+
+        /* 卡片样式 */
+        .card {
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            margin-bottom: 20px;
+            animation: fadeIn 0.5s ease;
+        }
+
+        /* 按钮通用样式 */
+        .btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: var(--radius);
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background 0.3s;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .btn:hover {
+            background-color: var(--primary-hover);
+        }
+
+        .btn-block {
+            width: 100%;
+        }
+
+        /* 密码模态框 */
+        #password-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 40px;
+            border-radius: var(--radius);
+            width: 90%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        .password-input {
+            width: 100%;
+            padding: 12px;
+            margin: 20px 0;
+            border: 1px solid #ddd;
+            border-radius: var(--radius);
+            font-size: 1rem;
+        }
+
+        /* 测试题目区域 */
+        .question-item {
+            display: none; /* 默认隐藏，通过JS控制显示 */
+        }
+
+        .question-item.active {
+            display: block;
+        }
+
+        .option-group {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .option-label {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            border: 2px solid #eee;
+            border-radius: var(--radius);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .option-label:hover {
+            border-color: var(--primary-color);
+            background-color: #f0f7ff;
+        }
+
+        .option-label input {
+            margin-right: 15px;
+            transform: scale(1.2);
+        }
+
+        /* 进度条 */
+        .progress-container {
+            margin-bottom: 20px;
+            background-color: #e0e0e0;
+            border-radius: 10px;
+            height: 10px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background-color: var(--primary-color);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+        }
+
+        /* 结果展示 */
+        .result-header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: #eef6ff;
+            border-radius: var(--radius);
+        }
+
+        .result-code {
+            font-size: 3rem;
+            font-weight: bold;
+            color: var(--primary-color);
+            letter-spacing: 5px;
+        }
+
+        .result-details h3 {
+            margin-top: 20px;
+            margin-bottom: 10px;
+            color: #2c3e50;
+        }
+
+        .tag {
+            display: inline-block;
+            background: var(--primary-color);
+            color: white;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            margin-right: 5px;
+        }
+
+        /* Toast 提示 */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #333;
+            color: #fff;
+            padding: 12px 24px;
+            border-radius: 25px;
+            opacity: 0;
+            transition: opacity 0.3s;
+            pointer-events: none;
+            z-index: 2000;
+        }
+
+        .toast.show {
+            opacity: 1;
+        }
+
+        .toast.error {
+            background-color: var(--error-color);
+        }
+
+        /* 动画 */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 600px) {
+            .card { padding: 20px; }
+            .result-code { font-size: 2.2rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 密码验证模态框 -->
+    <div id="password-modal">
+        <div class="modal-content">
+            <h2>访问受限</h2>
+            <p>请输入访问密码以开始测试。</p>
+            <input type="password" id="password-input" class="password-input" placeholder="输入密码">
+            <button class="btn btn-block" onclick="checkPassword()">进入测试</button>
+        </div>
+    </div>
+
+    <!-- 消息提示 -->
+    <div id="toast" class="toast">消息提示</div>
+
+    <!-- 主页面内容 -->
+    <div class="container" id="main-content" style="display: none;">
+        
+        <!-- 欢迎页 -->
+        <section id="intro-screen" class="card">
+            <header>
+                <h1>MBTI 性格测试 (中国地区修行版)</h1>
+                <p>28题精简版 · 适用于招聘与自我探索</p>
+            </header>
+            
+            <div style="margin-bottom: 20px;">
+                <h2>说明</h2>
+                <p>这份测试包括一份MBTI测试二十八题简版。所有问题都取自于人们的日常生活，您的回答只是表明您通常是如何看待和处理事物的。</p>
+                <p>所有问题都是反映何种工作氛围和环境适合您，无所谓对错，更无好坏之分。请仔细阅读问卷，并选出一个答案。</p>
+                <p style="color: var(--error-color); font-weight: bold;">请注意：每道题都要作答，测验中有测谎的题目，如果发现没有诚实回答，整个问卷作废。</p>
+            </div>
+
+            <div style="text-align: center;">
+                <button class="btn" onclick="startTest()">开始测试</button>
+            </div>
+        </section>
+
+        <!-- 测试进行页 -->
+        <section id="quiz-screen" class="card" style="display: none;">
+            <div class="progress-container">
+                <div class="progress-bar" id="progress-bar"></div>
+            </div>
+            <div style="margin-bottom: 10px; color: var(--text-light); font-size: 0.9rem;">
+                题目 <span id="current-question-num">1</span> / 28
+            </div>
+
+            <div id="question-container">
+                <!-- 题目将通过JS动态插入 -->
+            </div>
+
+            <div class="nav-buttons">
+                <button class="btn" id="prev-btn" onclick="prevQuestion()" style="background-color: #95a5a6; visibility: hidden;">上一题</button>
+                <button class="btn" id="next-btn" onclick="nextQuestion()">下一题</button>
+            </div>
+        </section>
+
+        <!-- 结果页 -->
+        <section id="result-screen" class="card" style="display: none;">
+            <div class="result-header">
+                <h2>您的测试结果是</h2>
+                <div class="result-code" id="result-type">XXXX</div>
+                <p id="result-title">性格类型名称</p>
+            </div>
+
+            <div class="result-details">
+                <h3>性格特征</h3>
+                <p id="result-desc">性格描述加载中...</p>
+                
+                <h3>适合职业</h3>
+                <div id="result-jobs">
+                    <!-- 职业标签 -->
+                </div>
+            </div>
+
+            <div style="text-align: center; margin-top: 40px;">
+                <button class="btn" onclick="location.reload()">重新测试</button>
+            </div>
+        </section>
+
+    </div>
+
+    <script>
+        // 题目数据
+        const questions = [
+            { id: 1, text: "我倾向从何处得到动力和信心：", options: [{ key: "A", text: "别人" }, { key: "B", text: "我自己的想法" }] },
+            { id: 2, text: "当我参加一个社交聚会时，我一般是这样的状态：", options: [{ key: "A", text: "夜色越深越有劲，一旦我开始投入，也许就是最晚离开的那一个" }, { key: "B", text: "在夜晚开始的时候，我就疲倦了并且想回家" }] },
+            { id: 3, text: "下列哪一种听起来比较吸引人？", options: [{ key: "A", text: "与我的恋人到有很多人且社交活动频繁的地方" }, { key: "B", text: "待在家中与我的恋人做一些特别的事情，例如说观赏一部有趣的录像带并享用我最爱的外带食物" }] },
+            { id: 4, text: "在约会中，我通常：", options: [{ key: "A", text: "整体来说蛮健谈的" }, { key: "B", text: "较安静并保留，直到我觉得准备好了，才开始说话" }] },
+            { id: 5, text: "过去，我遇见我大部分恋人是：", options: [{ key: "A", text: "在公众场合，比如学习工作上、休闲活动中、或当朋友介绍我给他们的朋友时" }, { key: "B", text: "透过私人的方式，例如婚恋网站、网络聊天、或是由亲密的朋友和家人介绍" }] },
+            { id: 6, text: "论真实的想法，我倾向拥有：", options: [{ key: "A", text: "很多认识的人和很亲密的朋友" }, { key: "B", text: "一些很亲密的朋友和一些认识的人" }] },
+            { id: 7, text: "过去，我的恋人倾向对我说这些：", options: [{ key: "A", text: "你难道不可以安静一点吗？" }, { key: "B", text: "你能从自己的世界里面走出来一下吗？" }] },
+            
+            { id: 8, text: "我倾向透过以下方式形成脑海中的概念：", options: [{ key: "A", text: "我对有可能发生之事的想象和期望" }, { key: "B", text: "我对目前状况实际认知" }] },
+            { id: 9, text: "在我做分析的时候，首先能意识到的是：", options: [{ key: "A", text: "我的直觉" }, { key: "B", text: "我直接的观察和现成的经验" }] },
+            { id: 10, text: "在我自己的人际关系中，我一般是这样处理的：", options: [{ key: "A", text: "经常联络，因为永远有进步的空间" }, { key: "B", text: "若它没有被破坏，别修补它" }] },
+            { id: 11, text: "当我在约会觉得放松时，我倾向谈论：", options: [{ key: "A", text: "未来，关于改进或发明事物，和生活的种种可能性。例如说，我也许会谈论一个新的科学发明，或一个更好的方法来表达我的感受。" }, { key: "B", text: "实际的，具体的，关于「此时此地」的事物。例如说，我也许会在餐后谈论品酒的好方法，或我即将要参加的新奇旅程。" }] },
+            { id: 12, text: "我是这种人：", options: [{ key: "A", text: "先看整个大局面" }, { key: "B", text: "先掌握细节" }] },
+            { id: 13, text: "在我内心深处，我认为：", options: [{ key: "A", text: "与其活在不完美的现实中，我选择活在我们的精神世界里" }, { key: "B", text: "与其活在虚无缥缈的精神世界，我选择活在现实中" }] },
+            { id: 14, text: "我通常：", options: [{ key: "A", text: "偏向于去想象一大堆关于即将来临之约会的事情" }, { key: "B", text: "偏向于拘紧地想象即将来临的约会，只期待让它自然地发生" }] },
+
+            { id: 15, text: "我倾向如此做决定：", options: [{ key: "A", text: "首先依我的心意，然后依我的逻辑" }, { key: "B", text: "首先依我的逻辑，然后依我的心意" }] },
+            { id: 16, text: "我倾向比较能够察觉到：", options: [{ key: "A", text: "当人们需要情感上的支持时" }, { key: "B", text: "当人们不合逻辑时" }] },
+            { id: 17, text: "当自己和某人分手时。", options: [{ key: "A", text: "我的情绪深陷其中，很难才能抽身而出" }, { key: "B", text: "虽然我觉得受伤，但一旦下定决心，我会直截了当地将过去恋人的影子甩开" }] },
+            { id: 18, text: "当与一个人交往时，我倾向评量：", options: [{ key: "A", text: "情感上的兼容性：表达爱意和对另一半的需求很敏感" }, { key: "B", text: "智能上的兼容性：沟通重要的想法：客观地讨论和辩论事情" }] },
+            { id: 19, text: "当我不同意我恋人的想法时：", options: [{ key: "A", text: "我尽可能地避免伤害对方的感受；若是会对对方造成伤害的话，我就不会说" }, { key: "B", text: "我通常很直接，毫无保留地把事实和我的逻辑告诉对方，因为对的就是对的" }] },
+            { id: 20, text: "认识我的人倾向形容我为：", options: [{ key: "A", text: "热情和敏感" }, { key: "B", text: "逻辑和明确" }] },
+            { id: 21, text: "我认为自己和很多人的相遇是：", options: [{ key: "A", text: "随意的，友善的及重要的" }, { key: "B", text: "经过思考的，或多或少有一定目的性" }] },
+
+            { id: 22, text: "若我有时间和金钱，我的朋友邀请我到国外度假，并且在一天前才通知，我会：", options: [{ key: "A", text: "必须先检查我的时间表" }, { key: "B", text: "立即收拾行装" }] },
+            { id: 23, text: "在第一次约会中：", options: [{ key: "A", text: "若我所约的人来迟了，我心里会很不高兴" }, { key: "B", text: "即使所约的人来迟了，我一点都不放在心里" }] },
+            { id: 24, text: "我偏好：", options: [{ key: "A", text: "事先知道约会的行程：要去哪里、有谁参加、我会在哪里多久、该如何打扮" }, { key: "B", text: "让约会自然地发生，不做先前太多的计划" }] },
+            { id: 25, text: "我期待的生活包含着：", options: [{ key: "A", text: "科学合理的安排和有毅力的执行" }, { key: "B", text: "没有什么压力，所有事情自然发生和时间弹性很大" }] },
+            { id: 26, text: "哪一项较为常见：", options: [{ key: "A", text: "我先入会场而其它人随后来到" }, { key: "B", text: "大部分人先到而我最后一个来" }] },
+            { id: 27, text: "我是这样喜欢……的人：", options: [{ key: "A", text: "快刀斩乱麻，下定决心并且做出最后肯定的结论" }, { key: "B", text: "放开我的选择并且持续收集信息，这样结果会更准确和深刻" }] },
+            { id: 28, text: "我是这类型的人：", options: [{ key: "A", text: "喜欢在一个时间里专心于一件事情直到完成" }, { key: "B", text: "喜欢同时进行好几件事情" }] }
+        ];
+
+        // 结果数据
+        const resultsData = {
+            "ISTJ": { title: "物流师", desc: "严肃、少言、依靠精力集中，通过全面性和可靠性获得成功。注重实践、有秩序、实事求是、有逻辑、现实、值得信赖。他们自己决定该做什么并不愿反对和干扰，并坚定不移地朝着目标前进，不易分心。喜欢将工作、家庭和生活都安排得井井有条。重视传统和忠诚。", jobs: ["首席信息系统执行官", "天文学家", "数据库管理", "会计", "房地产经纪人", "侦探", "行政管理", "信用分析师"] },
+            "ISFJ": { title: "守卫者", desc: "少言、友善、有责任感和良知。坚定地致力于完成他们的义务。可以使任何项目和群体更加稳定。忠诚、体贴、周到、刻苦、精确，他们的兴趣通常不是技术性的。有洞察力，能对必要的细节有耐心，关心他人的感受。努力把工作和家庭环境营造得有序而温馨。", jobs: ["内科医生", "营养师", "图书/档案管理员", "室内装潢设计师", "客户服务专员", "记账员", "特殊教育教师", "酒店管理"] },
+            "INFJ": { title: "提倡者", desc: "沉静地坚强、责任心强、关心他人、富创造力，坚持自己的价值观。全力投入自己的工作。因其坚定的原则而受尊重。寻求思想、关系、物质等之间的意义和联系。希望了解什么能够激励人，对人有很强的洞察力。对于怎样更好的服务大众有清晰的远景,别人可能会尊重和追随他们。在对于目标的实现过程中有计划而且果断坚定。", jobs: ["特殊教育教师", "建筑设计师", "培训经理/培训师", "职业策划咨询顾问", "心理咨询师", "网站编辑", "作家", "仲裁人"] },
+            "INTJ": { title: "建筑师", desc: "具有创造性的思想，并大力推动他们自己的主意和目标。目光远大、能很快洞察到外界事物间的规律并形成长期的远景计划。一旦决定做一件事就会开始规划并直到完成为止。在吸引他们的领域,他们有很好的能力去组织工作并将其进行到底。不轻信、具批判性、独立性、有决心，对于自己和他人的能力和表现要求都非常高。", jobs: ["首席财政执行官", "知识产权律师", "设计工程师", "精神分析师", "心脏病专家", "媒体策划", "网络管理员", "建筑师"] },
+            "ISTP": { title: "鉴赏家", desc: "是个安静的观察者直到有问题发生，就会马上行动。自制、以独有的好奇心和出人意料的有创意的幽默，观察和分析生活。分析事物运作的原理，对于原因和结果感兴趣，能从大量的信息中很快的找到关键的症结所在，用逻辑的方式处理问题，重视效率。", jobs: ["信息服务业经理", "计算机程序员", "警官", "软件开发员", "律师助理", "消防员", "私人侦探", "药剂师"] },
+            "ISFP": { title: "探险家", desc: "羞怯、友善、敏感、和谐、谦虚看待自己的能力。不喜欢争论和冲突，不将自己的观点和价值观强加于人。喜欢有自己的空间，喜欢能按照自己的时间表工作。一般说,无意于做领导工作,但对于自己的价值观和自己觉得重要的人非常忠诚，有责任心。他们享受眼前的乐趣,所以事情做完经常松懈而不愿让过度的紧迫和费事来破坏这种享受。", jobs: ["室内装潢设计师", "按摩师", "客户服务专员", "服装设计师", "厨师", "护士", "牙医", "旅游管理"] },
+            "INFP": { title: "调停者", desc: "沉稳的观察者、理想主义、忠实、希望外部的生活和自己内心的价值观是统一的。有求知欲,很快能看到事情的可能性,能成为实现想法的催化剂。只要某种价值观不受到威胁,他们都善于适应、灵活、善于接受。愿意谅解别人和了解充分发挥人潜力的方法。对财富和周围的事物不太关心。", jobs: ["心理学家", "人力资源管理", "翻译", "大学教师（人文学科）", "社会工作者", "图书管理员", "服装设计师", "编辑/网站设计师"] },
+            "INTP": { title: "逻辑学家", desc: "安静、内向、灵活、适应力强。喜欢理论性的和抽象的事物，热衷于思考而非社交活动。对于自己感兴趣的领域有超凡的集中精力和深度解决问题的能力。谋求他们的某些特别的爱好能得到运用的那些职业。多疑，有时会有点挑剔，喜欢分析。", jobs: ["软件设计师", "风险投资家", "法律仲裁人", "金融分析师", "大学教师（经济学）", "音乐家", "知识产权律师", "网站设计师"] },
+            "ESTP": { title: "企业家", desc: "擅长于现场解决问题，注重当前，自然不做作。喜欢行动,不喜多加解释。对任何的进展都感到高兴。往往喜好机械的东西和运动,享受和他人在一起的时刻。善应变、容忍、重实效，注重结果，觉得理论和抽象的解释非常无趣。最喜好能干好、能掌握、能分析的交际事物。学习新事物最有效的方式是通过亲身感受和练习，喜欢物质享受和时尚。", jobs: ["企业家", "股票经纪人", "保险经纪人", "土木工程师", "旅游管理", "职业运动员/教练", "电子游戏开发员", "房产开发商"] },
+            "ESFP": { title: "表演者", desc: "开朗、随和、友善、接受力强。热爱生活、人类和物质上的享受。喜欢和别人一起将事情做成功。喜欢行动并力促事情发生。他们了解正在发生的事情并积极参与。在工作中讲究常识和实用性，并使工作显得有趣。在需要丰富的知识和实际能力的情况下表现最佳。灵活、自然不做作，对于新的任何事物都能很快地适应，学习新事物最有效的方式是和他人一起尝试。", jobs: ["幼教老师", "公关专员", "职业策划咨询师", "旅游管理/导游", "促销员", "演员", "海洋生物学家", "销售"] },
+            "ENFP": { title: "竞选者", desc: "热情洋溢、极富朝气、机敏、富于想象力，认为人生有很多的可能性。能很快地将事情和信息联系起来，然后很自信地根据自己的判断解决问题。常常依据他们自己的能力去即席成事,而不是事先准备。几乎能够做他们感兴趣的任何事情，对任何困难都能迅速给出解决办法。总是需要得到别人的认可，也总是准备着给与他人赏识和帮助。经常能对他们想做的任何事情找到令人信服的理由。灵活、自然不做作，有很强的即兴发挥的能力，言语流畅。", jobs: ["广告客户管理", "管理咨询顾问", "演员", "平面设计师", "艺术指导", "公司团队培训师", "心理学家", "人力资源管理"] },
+            "ENTP": { title: "辩论家", desc: "敏捷、睿智、有发明天才,长于许多事情。有激励别人的能力、机警、直言不讳。可能出于逗趣而争论问题的任何一个方面。在解决新的、具有挑战性的问题时机智而有策略，不喜欢例行公事，很少会用相同的方法做相同的事情，易把兴趣从一点转移到另一点。能够轻而易举地为他们的要求找到合乎逻辑的理由。善于找出理论上的可能性，然后再用战略的眼光分析。善于理解别人。", jobs: ["企业家", "投资银行家", "广告创意总监", "市场管理咨询顾问", "文案", "广播/电视主持人", "演员", "大学校长"] },
+            "ESTJ": { title: "总经理", desc: "实际、现实主义、果断、迅速行动起来执行决定。由于有天生的商业或机械学头脑，所以对抽象理论不感兴趣。善于将项目和人组织起来将事情完成，并尽可能用最有效率的方法得到结果，在实施计划时强而有力。喜欢组织和参与活动，通常能做优秀的领导人。注重日常的细节，有一套非常清晰的逻辑标准，有系统性地遵循，并希望他人也同样遵循。", jobs: ["公司首席执行官", "军官", "预算分析师", "药剂师", "房地产经纪人", "保险经纪人", "教师（贸易/工商类）", "物业管理"] },
+            "ESFJ": { title: "执政官", desc: "热心、健谈、受欢迎、有责任心、天生的合作者、积极的委员会成员。要求和谐并可能长于创造和谐，并为此果断地执行。喜欢和他人一起精确并及时地完成任务。事无巨细都会保持忠诚。能体察到他人在日常生活中的所需并竭尽全力帮助。在得到鼓励和赞扬时工作最出色。主要的兴趣在于那些对人们的生活有直接和明显的影响的事情。", jobs: ["房地产经纪人", "零售商", "护士", "理货员/采购", "按摩师", "运动教练", "饮食业管理", "旅游管理"] },
+            "ENFJ": { title: "主人公", desc: "敏感、热情、为他人着想、有责任心。真正地关心他人的所想所愿。善于发现他人的潜能，并希望能帮助他们实现。处理事情时尽量适当考虑别人的感情。能成为个人或群体成长和进步的催化剂。能提出建议或轻松而机智地领导小组讨论。喜社交、受欢迎、有同情心。对表扬和批评敏感。", jobs: ["广告客户管理", "杂志编辑", "公司培训师", "电视制片人", "市场专员", "作家", "社会工作者", "人力资源管理"] },
+            "ENTJ": { title: "指挥官", desc: "直率、果断,有天生的领导能力。能很快看到公司/组织程序和政策中的不合理性和低效能性，发展并实施有效和全面的系统来解决问题。善于做长期的计划和目标的设定。长于需要论据和机智谈吐的任何事情,如公开演讲之类。通常见多识广，博览群书，喜欢拓广自己的知识面并将此分享给他人。在陈述自己的想法时非常强而有力。", jobs: ["公司首席执行官", "管理咨询顾问", "政治家", "房产开发商", "教育咨询顾问", "投资顾问", "法官"] }
+        };
+
+        // 状态管理
+        let currentQuestionIndex = 0;
+        let userAnswers = new Array(28).fill(null); // 存储 A 或 B
+
+        // 计分规则配置
+        // 1-7: A->E, B->I
+        // 8-14: A->N, B->S
+        // 15-21: A->F, B->T
+        // 22-28: A->J, B->P
+        const scoringRules = [
+            { dim: 'EI', A: 'E', B: 'I' },
+            { dim: 'EI', A: 'E', B: 'I' },
+            { dim: 'EI', A: 'E', B: 'I' },
+            { dim: 'EI', A: 'E', B: 'I' },
+            { dim: 'EI', A: 'E', B: 'I' },
+            { dim: 'EI', A: 'E', B: 'I' },
+            { dim: 'EI', A: 'E', B: 'I' },
+            { dim: 'NS', A: 'N', B: 'S' },
+            { dim: 'NS', A: 'N', B: 'S' },
+            { dim: 'NS', A: 'N', B: 'S' },
+            { dim: 'NS', A: 'N', B: 'S' },
+            { dim: 'NS', A: 'N', B: 'S' },
+            { dim: 'NS', A: 'N', B: 'S' },
+            { dim: 'NS', A: 'N', B: 'S' },
+            { dim: 'FT', A: 'F', B: 'T' },
+            { dim: 'FT', A: 'F', B: 'T' },
+            { dim: 'FT', A: 'F', B: 'T' },
+            { dim: 'FT', A: 'F', B: 'T' },
+            { dim: 'FT', A: 'F', B: 'T' },
+            { dim: 'FT', A: 'F', B: 'T' },
+            { dim: 'FT', A: 'F', B: 'T' },
+            { dim: 'JP', A: 'J', B: 'P' },
+            { dim: 'JP', A: 'J', B: 'P' },
+            { dim: 'JP', A: 'J', B: 'P' },
+            { dim: 'JP', A: 'J', B: 'P' },
+            { dim: 'JP', A: 'J', B: 'P' },
+            { dim: 'JP', A: 'J', B: 'P' },
+            { dim: 'JP', A: 'J', B: 'P' }
+        ];
+
+        // 工具函数：显示Toast
+        function showToast(msg, isError = false) {
+            const toast = document.getElementById('toast');
+            toast.textContent = msg;
+            if(isError) toast.classList.add('error');
+            else toast.classList.remove('error');
+            
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        // 密码检查
+        function checkPassword() {
+            const input = document.getElementById('password-input').value;
+            if (input === 'MBTI 0028') {
+                document.getElementById('password-modal').style.display = 'none';
+                document.getElementById('main-content').style.display = 'block';
+            } else {
+                showToast("密码错误，请重试", true);
+            }
+        }
+
+        // 开始测试
+        function startTest() {
+            document.getElementById('intro-screen').style.display = 'none';
+            document.getElementById('quiz-screen').style.display = 'block';
+            renderQuestion();
+        }
+
+        // 渲染题目
+        function renderQuestion() {
+            const qData = questions[currentQuestionIndex];
+            const container = document.getElementById('question-container');
+            
+            // 更新进度
+            document.getElementById('current-question-num').textContent = currentQuestionIndex + 1;
+            const progressPercent = ((currentQuestionIndex) / 28) * 100;
+            document.getElementById('progress-bar').style.width = `${progressPercent}%`;
+
+            // 构建HTML
+            let html = `
+                <div class="question-item active fade-in">
+                    <h3>${qData.id}. ${qData.text}</h3>
+                    <div class="option-group">
+            `;
+
+            qData.options.forEach(opt => {
+                const isChecked = userAnswers[currentQuestionIndex] === opt.key ? 'checked' : '';
+                html += `
+                    <label class="option-label">
+                        <input type="radio" name="q${qData.id}" value="${opt.key}" ${isChecked} onchange="selectOption('${opt.key}')">
+                        <span>${opt.text}</span>
+                    </label>
+                `;
+            });
+
+            html += `</div></div>`;
+            container.innerHTML = html;
+
+            // 按钮状态
+            const prevBtn = document.getElementById('prev-btn');
+            const nextBtn = document.getElementById('next-btn');
+
+            prevBtn.style.visibility = currentQuestionIndex === 0 ? 'hidden' : 'visible';
+            
+            if (currentQuestionIndex === 27) {
+                nextBtn.textContent = "查看结果";
+                nextBtn.onclick = calculateResult;
+            } else {
+                nextBtn.textContent = "下一题";
+                nextBtn.onclick = nextQuestion;
+            }
+        }
+
+        // 选择选项
+        function selectOption(val) {
+            userAnswers[currentQuestionIndex] = val;
+        }
+
+        // 下一题
+        function nextQuestion() {
+            if (userAnswers[currentQuestionIndex] === null) {
+                showToast("请先选择一个答案", true);
+                return;
+            }
+            currentQuestionIndex++;
+            renderQuestion();
+        }
+
+        // 上一题
+        function prevQuestion() {
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                renderQuestion();
+            }
+        }
+
+        // 计算结果
+        function calculateResult() {
+            if (userAnswers[currentQuestionIndex] === null) {
+                showToast("请先选择一个答案", true);
+                return;
+            }
+
+            // 初始化计数器
+            let scores = { E:0, I:0, N:0, S:0, F:0, T:0, J:0, P:0 };
+
+            userAnswers.forEach((answer, index) => {
+                const rule = scoringRules[index];
+                if (answer === 'A') {
+                    scores[rule.A]++;
+                } else if (answer === 'B') {
+                    scores[rule.B]++;
+                }
+            });
+
+            // 确定字母
+            const type = [
+                scores.E >= scores.I ? 'E' : 'I',
+                scores.N >= scores.S ? 'N' : 'S',
+                scores.F >= scores.T ? 'F' : 'T',
+                scores.J >= scores.P ? 'J' : 'P'
+            ].join('');
+
+            showResult(type);
+        }
+
+        // 显示结果
+        function showResult(type) {
+            document.getElementById('quiz-screen').style.display = 'none';
+            document.getElementById('result-screen').style.display = 'block';
+
+            const data = resultsData[type];
+            if (!data) {
+                document.getElementById('result-desc').textContent = "未能找到该类型的描述，请联系管理员。";
+                return;
+            }
+
+            document.getElementById('result-type').textContent = type;
+            document.getElementById('result-title').textContent = data.title;
+            document.getElementById('result-desc').textContent = data.desc;
+
+            const jobsContainer = document.getElementById('result-jobs');
+            jobsContainer.innerHTML = data.jobs.map(job => `<span class="tag">${job}</span>`).join('');
+        }
+
+        // 监听回车键提交密码
+        document.getElementById('password-input').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                checkPassword();
+            }
+        });
+    </script>
+</body>
+</html>
